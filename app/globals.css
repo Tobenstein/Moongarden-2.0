@@ -242,8 +242,8 @@ button { font: inherit; }
 .hanging-pot > .planter-art .planter-body, .hanging-pot > .planter-art .planter-rim { z-index: 3; }
 .garden-bed > .planter-art .planter-mark, .hanging-pot > .planter-art .planter-mark { z-index: 4; }
 .bed-plants, .hanging-pot .plant-art { z-index: 2; }
-.bed-plants { left: 10px; width: 126px; overflow: hidden; }
-.hanging-pot .plant-art { left: 17px; width: 38px; overflow: hidden; }
+.bed-plants { left: 10px; width: 126px; overflow: visible; }
+.hanging-pot .plant-art { left: 17px; width: 38px; overflow: visible; }
 .hanging-pot .plant-stalk { max-width: 3px; }
 
 @media (min-width: 700px) {
