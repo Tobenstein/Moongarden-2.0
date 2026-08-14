@@ -75,6 +75,15 @@ function TaskRow({ task, onToggle }: { task: Task; onToggle: () => void }) {
   );
 }
 
+function WeeklyMoon({ day, value, current }: { day: string; value: number; current?: boolean }) {
+  return (
+    <div className={`weekly-day ${current ? "current" : ""}`}>
+      <span>{day}</span>
+      <i className="weekly-moon" style={{ "--moon-fill": `${Math.round(value * 100)}%` } as React.CSSProperties}><b /></i>
+    </div>
+  );
+}
+
 function GardenView({
   growing, onGrowthSeen, moonlight, setMoonlight, inventory, setInventory,
   giftClaimed, setGiftClaimed, plantedDandelion, setPlantedDandelion,
@@ -286,6 +295,7 @@ export default function Home() {
   const [inventory, setInventory] = useState<GardenInventory>({ dandelion: 0, water: 0, clover: 0 });
   const [giftClaimed, setGiftClaimed] = useState(false);
   const [plantedDandelion, setPlantedDandelion] = useState(false);
+  const [noteVisible, setNoteVisible] = useState(true);
 
   const completed = useMemo(
     () => [...care, ...today].filter((task) => task.completed).length,
@@ -301,6 +311,7 @@ export default function Home() {
         const reward = group === "care" ? .5 : 1;
         setMoonlight((value) => Math.max(0, value + (next ? reward : -reward)));
         setMessage(next ? "You cared for yourself. Your lavender is ready to grow." : "No problem. You can return to it whenever you like.");
+        setNoteVisible(true);
         if (next) setGardenReady(true);
         return { ...task, completed: next };
       })
@@ -311,6 +322,7 @@ export default function Home() {
     setTended((items) => items.includes(id) ? items : [...items, id]);
     setMoonlight((value) => value + .5);
     setMessage("A small beginning is still a beginning.");
+    setNoteVisible(true);
   }
 
   return (
@@ -330,16 +342,37 @@ export default function Home() {
 
       {activeView === "today" ? <>
       <section className="welcome" aria-labelledby="welcome-title">
-          <p className="eyebrow">Good evening, Shelby</p>
-          <h1 id="welcome-title">You are already growing.</h1>
-        <div className="garden-note">
+        <p className="eyebrow">Good evening, Shelby</p>
+        <h1 id="welcome-title">You are already growing.</h1>
+
+        <section className="weekly-progress" aria-label="This week’s accomplishments">
+          <div className="weekly-heading"><span>This week</span><small>Acts of care</small></div>
+          <div className="weekly-moons">
+            <WeeklyMoon day="M" value={1} />
+            <WeeklyMoon day="T" value={.8} />
+            <WeeklyMoon day="W" value={.5} />
+            <WeeklyMoon day="T" value={1} />
+            <WeeklyMoon day="F" value={Math.min(completed / 5, 1)} current />
+            <WeeklyMoon day="S" value={0} />
+            <WeeklyMoon day="S" value={0} />
+          </div>
+          <div className="weekly-summary">
+            <div><span>Daily goals</span><strong>{completed} of 5</strong></div>
+            <div><span>Growth Rhythm</span><strong>3 days</strong></div>
+          </div>
+        </section>
+
+        {noteVisible && <div className="garden-note">
           <span className="garden-orb" aria-hidden="true"><i /></span>
           <div>
             <p>{message}</p>
             <span>Your lavender has started to grow.</span>
           </div>
-          <button aria-label="Visit your garden">›</button>
-        </div>
+          <div className="garden-note-actions">
+            <button onClick={() => setNoteVisible(false)} aria-label="Dismiss message">×</button>
+            <button onClick={() => setActiveView("garden")} aria-label="Visit your garden">›</button>
+          </div>
+        </div>}
       </section>
 
       <section className="day-intro">
