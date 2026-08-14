@@ -76,6 +76,9 @@ function GardenView({
   const [hideUnaffordable, setHideUnaffordable] = useState(false);
   const [hideMoonlit, setHideMoonlit] = useState(false);
   const [selectedItem, setSelectedItem] = useState<keyof GardenInventory | null>(null);
+  const [giftVisible, setGiftVisible] = useState(true);
+  const [rhythmVisible, setRhythmVisible] = useState(true);
+  const [rhythmCollapsed, setRhythmCollapsed] = useState(false);
   const rhythmDays = 3;
   const missedDays = 1;
   const rhythmPayout = Math.max(.5, Math.min(5, rhythmDays * .5 - Math.floor(missedDays / 2) * .5));
@@ -93,6 +96,12 @@ function GardenView({
       window.clearTimeout(seenTimer);
     };
   }, [growing, onGrowthSeen]);
+
+  useEffect(() => {
+    if (!giftClaimed) return;
+    const timer = window.setTimeout(() => setGiftVisible(false), 10000);
+    return () => window.clearTimeout(timer);
+  }, [giftClaimed]);
 
   const visibleMarketItems = marketItems.filter((item) =>
     (!hideUnaffordable || item.price <= moonlight) && (!hideMoonlit || item.tier !== "moonlit")
@@ -132,22 +141,25 @@ function GardenView({
         <button className="garden-balance" onClick={() => setMarketOpen(true)}><span>✦</span>{formatMoonlight(moonlight)}</button>
       </header>
 
-      <section className="rhythm-card">
+      {rhythmVisible && <section className={`rhythm-card ${rhythmCollapsed ? "collapsed" : ""}`}>
         <div className="rhythm-visual" aria-hidden="true"><i /><i /><i /><i /><i /></div>
         <div className="rhythm-copy">
           <span>Garden Rhythm</span>
           <strong>{rhythmDays} days tended</strong>
           <p>Today’s gentle bonus: {formatMoonlight(rhythmPayout)} Moonlight</p>
         </div>
-        <button aria-label="About Garden Rhythm">?</button>
+        <div className="rhythm-actions">
+          <button onClick={() => setRhythmCollapsed((value) => !value)} aria-label={rhythmCollapsed ? "Expand Garden Rhythm" : "Collapse Garden Rhythm"}>{rhythmCollapsed ? "+" : "−"}</button>
+          <button onClick={() => setRhythmVisible(false)} aria-label="Dismiss Garden Rhythm">×</button>
+        </div>
         <p className="rhythm-rest">One rest day. Your rhythm stays exactly where it is.</p>
-      </section>
+      </section>}
 
-      <button className={`daily-gift ${giftClaimed ? "claimed" : ""}`} onClick={claimGift} disabled={giftClaimed}>
+      {giftVisible && <button className={`daily-gift ${giftClaimed ? "claimed" : ""}`} onClick={claimGift} disabled={giftClaimed}>
         <span className="gift-icon">{giftClaimed ? "✓" : "✺"}</span>
         <span><strong>{giftClaimed ? "Today’s gift is in your pockets" : "A small gift for today"}</strong><small>{giftClaimed ? "One dandelion seed and one water" : "Dandelion seed + water · always free"}</small></span>
         <b>{giftClaimed ? "Collected" : "Collect"}</b>
-      </button>
+      </button>}
 
       <div className={`garden-scene ${growthActive ? "is-growing" : ""}`}>
         <div className="stars"><i /><i /><i /><i /><i /></div>
