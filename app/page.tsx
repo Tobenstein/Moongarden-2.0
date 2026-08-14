@@ -200,7 +200,7 @@ function GardenView({
         <div className="hanging-garden hanging-right">
           <span className="hanger-line line-a" /><span className="hanger-line line-b" />
           <span className="garden-shelf" />
-          <div className="hanging-pot pot-a fruit-pot"><PlantArt species="clover" size="small" /><PlanterArt kind="clay" size="small" /><b /><b /><b /></div>
+          <div className="hanging-pot pot-a"><PlantArt species="dandelion" size="small" /><PlanterArt kind="clay" size="small" /></div>
           <div className="hanging-pot pot-b"><PlantArt species="orchid" size="small" /><PlanterArt kind="moon" size="small" /></div>
           <span className="vine vine-b"><i /><i /><i /><i /><i /></span>
         </div>
@@ -215,14 +215,14 @@ function GardenView({
           <span className="bed-label"><strong>Evening lavender</strong><small>{plantedDandelion ? "Lavender · Dandelion" : "Lavender · new growth"}</small></span>
         </button>
 
-        <button className="garden-bed bed-right" aria-label="Kitchen greens trough">
+        <button className="garden-bed bed-right" aria-label="Long-stem rose trough">
           <span className="bed-plants">
-            <PlantArt species="clover" size="small" />
-            <PlantArt species="marigold" stage={3} size="small" />
-            <PlantArt species="clover" stage={3} size="small" />
+            <PlantArt species="rose" size="small" />
+            <PlantArt species="rose" size="small" />
+            <PlantArt species="rose" size="small" />
           </span>
           <PlanterArt kind="trough" size="large" />
-          <span className="bed-label"><strong>Kitchen greens</strong><small>Clover · Marigold</small></span>
+          <span className="bed-label"><strong>Long-stem roses</strong><small>Blush rose · in bloom</small></span>
         </button>
 
         <div className="edge-foliage foliage-left"><PlantArt species="fern" size="large" /><i /><i /></div>
