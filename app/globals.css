@@ -225,6 +225,16 @@ button { font: inherit; }
 @keyframes bed-grow { 0% { transform: scale(.76); opacity: .7; } 55% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
 @keyframes garden-sway { from { translate: -1px 0; rotate: -1deg; } to { translate: 2px 1px; rotate: 1.5deg; } }
 
+/* Plants are anchored to the dark soil opening of each planter. */
+.hanging-pot .plant-art { top: auto; bottom: 34px; transform-origin: 50% 100%; }
+.bed-plants { left: 7px; bottom: 91px; display: block; width: 132px; height: 68px; pointer-events: none; }
+.bed-plants .plant-art { position: absolute; bottom: 0; margin: 0; transform-origin: 50% 100%; }
+.bed-plants .plant-art:nth-child(1) { left: 18%; transform: translateX(-50%) scale(.88); }
+.bed-plants .plant-art:nth-child(2) { left: 50%; transform: translateX(-50%); }
+.bed-plants .plant-art:nth-child(3) { left: 82%; transform: translateX(-50%) scale(.88); }
+.garden-scene.is-growing .bed-left .plant-art { animation: bed-grow-locked 1.8s cubic-bezier(.2,.8,.2,1); }
+@keyframes bed-grow-locked { 0% { translate: 0 10px; opacity: .72; } 55% { translate: 0 -3px; } 100% { translate: 0 0; opacity: 1; } }
+
 @media (min-width: 700px) {
   body { padding: 24px 0; }
   .app-shell { min-height: calc(100svh - 48px); border-radius: 28px; }
