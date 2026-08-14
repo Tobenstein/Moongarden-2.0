@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { BoostArt, PlanterArt, PlantArt, ToolArt } from "./garden-art";
 
 type Task = {
   id: string;
@@ -26,17 +27,36 @@ const growthItems = [
 ];
 
 type GardenInventory = { dandelion: number; water: number; clover: number };
-type MarketItem = { id: keyof GardenInventory | "trowel" | "orchid"; name: string; price: number; tier: "everyday" | "special" | "moonlit"; symbol: string; description: string };
+type MarketCategory = "planters" | "seeds" | "tools" | "boosts";
+type MarketItem = { id: string; name: string; price: number; tier: "everyday" | "special" | "moonlit"; category: MarketCategory; art: string; description: string };
 
 const marketItems: MarketItem[] = [
-  { id: "dandelion", name: "Dandelion seeds", price: 0, tier: "everyday", symbol: "✺", description: "Common, bright, and determined." },
-  { id: "water", name: "Fresh water", price: 0, tier: "everyday", symbol: "◆", description: "A small drink for something growing." },
-  { id: "clover", name: "Clover seeds", price: 1, tier: "everyday", symbol: "♣", description: "A soft green ground cover." },
-  { id: "trowel", name: "Copper trowel", price: 2, tier: "special", symbol: "⌁", description: "Opens one additional planting place." },
-  { id: "orchid", name: "Moon orchid", price: 8, tier: "moonlit", symbol: "✦", description: "A rare flower with a gentle night glow." },
+  { id: "nursery", name: "Nursery pot", price: 0, tier: "everyday", category: "planters", art: "nursery", description: "Your sturdy starter pot. Holds one plant." },
+  { id: "clay", name: "Clay pot", price: 3, tier: "special", category: "planters", art: "clay", description: "Holds one plant · 15% growth boost." },
+  { id: "ceramic", name: "Ceramic planter", price: 5, tier: "special", category: "planters", art: "ceramic", description: "Holds two plants and two species." },
+  { id: "trough", name: "Garden trough", price: 7, tier: "moonlit", category: "planters", art: "trough", description: "Holds five plants from up to two species." },
+  { id: "moon", name: "Moon basin", price: 10, tier: "moonlit", category: "planters", art: "moon", description: "Three plants · rare growth enhancement." },
+  { id: "dandelion", name: "Dandelion seeds", price: 0, tier: "everyday", category: "seeds", art: "dandelion", description: "Common, bright, and determined." },
+  { id: "clover", name: "Clover seeds", price: 1, tier: "everyday", category: "seeds", art: "clover", description: "A soft green ground cover." },
+  { id: "lavender", name: "Lavender seeds", price: 2, tier: "special", category: "seeds", art: "lavender", description: "Calm colour with a gentle sway." },
+  { id: "marigold", name: "Marigold seeds", price: 2, tier: "special", category: "seeds", art: "marigold", description: "A warm little burst of colour." },
+  { id: "orchid", name: "Moon orchid", price: 8, tier: "moonlit", category: "seeds", art: "orchid", description: "A rare flower with a gentle night glow." },
+  { id: "watering-can", name: "Watering can", price: 2, tier: "everyday", category: "tools", art: "watering-can", description: "Makes daily watering easier." },
+  { id: "trowel", name: "Copper trowel", price: 2, tier: "special", category: "tools", art: "trowel", description: "Opens an additional planting place." },
+  { id: "shears", name: "Pruning shears", price: 4, tier: "special", category: "tools", art: "shears", description: "Encourages mature plants to flower again." },
+  { id: "water", name: "Fresh water", price: 0, tier: "everyday", category: "boosts", art: "water", description: "A small drink for something growing." },
+  { id: "compost", name: "Rich compost", price: 1.5, tier: "everyday", category: "boosts", art: "compost", description: "Adds one gentle growth step." },
+  { id: "moon-dew", name: "Moon Dew", price: 4, tier: "moonlit", category: "boosts", art: "moon-dew", description: "A rare boost for night-blooming plants." },
 ];
 
 const formatMoonlight = (value: number) => Number.isInteger(value) ? `${value}` : `${Math.floor(value)}½`;
+
+function MarketArt({ item }: { item: MarketItem }) {
+  if (item.category === "planters") return <PlanterArt kind={item.art as "nursery" | "clay" | "ceramic" | "trough" | "moon"} />;
+  if (item.category === "seeds") return <PlantArt species={item.art as "dandelion" | "lavender" | "clover" | "marigold" | "fern" | "orchid"} stage={4} size="small" />;
+  if (item.category === "tools") return <ToolArt kind={item.art as "watering-can" | "trowel" | "shears" | "gloves"} />;
+  return <BoostArt kind={item.art as "water" | "compost" | "moon-dew" | "root-tonic"} />;
+}
 
 function TaskRow({ task, onToggle }: { task: Task; onToggle: () => void }) {
   return (
@@ -79,6 +99,7 @@ function GardenView({
   const [giftVisible, setGiftVisible] = useState(true);
   const [rhythmVisible, setRhythmVisible] = useState(true);
   const [rhythmCollapsed, setRhythmCollapsed] = useState(false);
+  const [marketCategory, setMarketCategory] = useState<MarketCategory>("planters");
   const rhythmDays = 3;
   const missedDays = 1;
   const rhythmPayout = Math.max(.5, Math.min(5, rhythmDays * .5 - Math.floor(missedDays / 2) * .5));
@@ -104,7 +125,7 @@ function GardenView({
   }, [giftClaimed]);
 
   const visibleMarketItems = marketItems.filter((item) =>
-    (!hideUnaffordable || item.price <= moonlight) && (!hideMoonlit || item.tier !== "moonlit")
+    item.category === marketCategory && (!hideUnaffordable || item.price <= moonlight) && (!hideMoonlit || item.tier !== "moonlit")
   );
 
   function claimGift() {
@@ -118,7 +139,7 @@ function GardenView({
       claimGift();
       return;
     }
-    if (item.price > moonlight || item.id === "trowel" || item.id === "orchid") return;
+    if (item.price > moonlight || !["dandelion", "clover"].includes(item.id)) return;
     setMoonlight((value) => value - item.price);
     setInventory((current) => ({ ...current, [item.id]: current[item.id as keyof GardenInventory] + 1 }));
   }
@@ -166,6 +187,11 @@ function GardenView({
         <div className="hill hill-back" />
         <div className="hill hill-front" />
         <div className="garden-path" />
+        <div className="featured-planter">
+          <PlantArt species="lavender" stage={growthActive ? 4 : 3} size="large" />
+          <PlanterArt kind="nursery" size="large" />
+          <span>Your first planter</span>
+        </div>
         <div className="plant lavender-plant">
           <div className="plant-label">Lavender</div>
           <span className="stem stem-one"><i /><b /></span>
@@ -210,11 +236,14 @@ function GardenView({
             <label><input type="checkbox" checked={hideUnaffordable} onChange={(e) => setHideUnaffordable(e.target.checked)} /> Hide what I can’t afford</label>
             <label><input type="checkbox" checked={hideMoonlit} onChange={(e) => setHideMoonlit(e.target.checked)} /> Hide Moonlit Collection</label>
           </div>
+          <div className="market-tabs" role="tablist" aria-label="Market sections">
+            {(["planters", "seeds", "tools", "boosts"] as MarketCategory[]).map((category) => <button key={category} role="tab" aria-selected={marketCategory === category} className={marketCategory === category ? "active" : ""} onClick={() => setMarketCategory(category)}>{category}</button>)}
+          </div>
           <div className="market-grid">
             {visibleMarketItems.map((item) => <article key={item.id} className={item.price > moonlight ? "unaffordable" : ""}>
-              <span className="market-symbol">{item.symbol}</span><small>{item.tier}</small><h3>{item.name}</h3><p>{item.description}</p>
-              <button onClick={() => buy(item)} disabled={item.price > moonlight || item.id === "trowel" || item.id === "orchid" || (item.price === 0 && giftClaimed)}>
-                {item.id === "trowel" || item.id === "orchid" ? "Coming later" : item.price === 0 ? (giftClaimed ? "Collected today" : "Collect daily gift") : `✦ ${formatMoonlight(item.price)}`}
+              <span className="market-art-wrap"><MarketArt item={item} /></span><small>{item.tier}</small><h3>{item.name}</h3><p>{item.description}</p>
+              <button onClick={() => buy(item)} disabled={item.price > moonlight || !["dandelion", "clover"].includes(item.id) || (item.price === 0 && giftClaimed)}>
+                {!["dandelion", "clover"].includes(item.id) ? (item.price > moonlight ? `✦ ${formatMoonlight(item.price)}` : "Preview item") : item.price === 0 ? (giftClaimed ? "Collected today" : "Collect daily gift") : `✦ ${formatMoonlight(item.price)}`}
               </button>
             </article>)}
           </div>
