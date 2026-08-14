@@ -186,25 +186,46 @@ function GardenView({
         <div className="stars"><i /><i /><i /><i /><i /></div>
         <div className="hill hill-back" />
         <div className="hill hill-front" />
-        <div className="garden-path" />
-        <div className="featured-planter">
-          <PlantArt species="lavender" stage={growthActive ? 4 : 3} size="large" />
-          <PlanterArt kind="nursery" size="large" />
-          <span>Your first planter</span>
+        <div className="garden-path"><i /><i /><i /><i /><i /></div>
+
+        <div className="hanging-garden hanging-left">
+          <span className="hanger-line line-a" /><span className="hanger-line line-b" />
+          <span className="garden-shelf" />
+          <div className="hanging-pot pot-a"><PlantArt species="marigold" size="small" /><PlanterArt kind="clay" size="small" /></div>
+          <div className="hanging-pot pot-b"><PlantArt species="fern" size="small" /><PlanterArt kind="ceramic" size="small" /></div>
+          <span className="vine vine-a"><i /><i /><i /><i /></span>
         </div>
-        <div className="plant lavender-plant">
-          <div className="plant-label">Lavender</div>
-          <span className="stem stem-one"><i /><b /></span>
-          <span className="stem stem-two"><i /><b /></span>
-          <span className="stem stem-three"><i /><b /></span>
-          <span className="stem stem-four"><i /><b /></span>
-          <span className="stem stem-five"><i /><b /></span>
-          <span className="soil-shadow" />
+
+        <div className="hanging-garden hanging-right">
+          <span className="hanger-line line-a" /><span className="hanger-line line-b" />
+          <span className="garden-shelf" />
+          <div className="hanging-pot pot-a fruit-pot"><PlantArt species="clover" size="small" /><PlanterArt kind="clay" size="small" /><b /><b /><b /></div>
+          <div className="hanging-pot pot-b"><PlantArt species="orchid" size="small" /><PlanterArt kind="moon" size="small" /></div>
+          <span className="vine vine-b"><i /><i /><i /><i /><i /></span>
         </div>
-        <button className={`empty-plot ${selectedItem === "dandelion" ? "ready" : ""} ${plantedDandelion ? "planted" : ""}`} aria-label="Empty garden plot" onClick={plantDandelion}>
-          {plantedDandelion ? <span className="dandelion-bloom">✺</span> : <><span>＋</span><small>{selectedItem === "dandelion" ? "plant dandelion" : "an open place"}</small></>}
+
+        <button className={`garden-bed bed-left ${selectedItem === "dandelion" ? "ready" : ""}`} onClick={plantDandelion} aria-label="Lavender and dandelion trough">
+          <span className="bed-plants">
+            <PlantArt species="lavender" stage={growthActive ? 4 : 3} size="small" />
+            <PlantArt species={plantedDandelion ? "dandelion" : "lavender"} stage={plantedDandelion ? 3 : 2} size="small" />
+            <PlantArt species="lavender" stage={4} size="small" />
+          </span>
+          <PlanterArt kind="trough" size="large" />
+          <span className="bed-label"><strong>Evening lavender</strong><small>{plantedDandelion ? "Lavender · Dandelion" : "Lavender · new growth"}</small></span>
         </button>
-        <div className="small-plant"><i /><i /><i /></div>
+
+        <button className="garden-bed bed-right" aria-label="Kitchen greens trough">
+          <span className="bed-plants">
+            <PlantArt species="clover" size="small" />
+            <PlantArt species="marigold" stage={3} size="small" />
+            <PlantArt species="clover" stage={3} size="small" />
+          </span>
+          <PlanterArt kind="trough" size="large" />
+          <span className="bed-label"><strong>Kitchen greens</strong><small>Clover · Marigold</small></span>
+        </button>
+
+        <div className="edge-foliage foliage-left"><PlantArt species="fern" size="large" /><i /><i /></div>
+        <div className="edge-foliage foliage-right"><PlantArt species="fern" size="large" /><i /><i /></div>
       </div>
 
       <div className={`growth-message ${growthActive ? "show" : ""}`} role="status">
