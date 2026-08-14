@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Task = {
   id: string;
@@ -32,7 +32,7 @@ function TaskRow({ task, onToggle }: { task: Task; onToggle: () => void }) {
       onClick={onToggle}
       aria-pressed={task.completed}
     >
-      <span className="check" aria-hidden="true">{task.completed ? "✓" : ""}</span>
+      <span className="task-moon" aria-hidden="true"><i /></span>
       <span className="task-copy">
         <span className="task-label">{task.label}</span>
         {task.note && <span className="task-note">{task.note}</span>}
@@ -42,12 +42,87 @@ function TaskRow({ task, onToggle }: { task: Task; onToggle: () => void }) {
   );
 }
 
+function GardenView({ growing, onGrowthSeen }: { growing: boolean; onGrowthSeen: () => void }) {
+  const [revealed, setRevealed] = useState(!growing);
+  const [growthActive, setGrowthActive] = useState(growing);
+
+  useEffect(() => {
+    if (!growing) return;
+    setGrowthActive(true);
+    setRevealed(false);
+    const timer = window.setTimeout(() => {
+      setRevealed(true);
+    }, 900);
+    const seenTimer = window.setTimeout(onGrowthSeen, 1800);
+    return () => {
+      window.clearTimeout(timer);
+      window.clearTimeout(seenTimer);
+    };
+  }, [growing, onGrowthSeen]);
+
+  return (
+    <section className="garden-view">
+      <header className="garden-header">
+        <div>
+          <p className="eyebrow">Your quiet place</p>
+          <h1>The Garden</h1>
+          <p>Every small act of care leaves something behind.</p>
+        </div>
+        <span className="garden-moon" aria-hidden="true">●</span>
+      </header>
+
+      <div className={`garden-scene ${growthActive ? "is-growing" : ""}`}>
+        <div className="stars"><i /><i /><i /><i /><i /></div>
+        <div className="hill hill-back" />
+        <div className="hill hill-front" />
+        <div className="garden-path" />
+        <div className="plant lavender-plant">
+          <div className="plant-label">Lavender</div>
+          <span className="stem stem-one"><i /><b /></span>
+          <span className="stem stem-two"><i /><b /></span>
+          <span className="stem stem-three"><i /><b /></span>
+          <span className="stem stem-four"><i /><b /></span>
+          <span className="stem stem-five"><i /><b /></span>
+          <span className="soil-shadow" />
+        </div>
+        <button className="empty-plot" aria-label="Empty garden plot">
+          <span>＋</span>
+          <small>an open place</small>
+        </button>
+        <div className="small-plant"><i /><i /><i /></div>
+      </div>
+
+      <div className={`growth-message ${growthActive ? "show" : ""}`} role="status">
+        <span className="growth-spark">✦</span>
+        <div>
+          <strong>{revealed ? "Your lavender grew." : "Something is stirring…"}</strong>
+          <p>{revealed ? "The care you gave yourself reached your garden." : "A little Moonlight found its way here."}</p>
+        </div>
+      </div>
+
+      <section className="garden-tray">
+        <div className="tray-heading">
+          <div><h2>Garden pockets</h2><p>Ready whenever you are.</p></div>
+          <button>View all</button>
+        </div>
+        <div className="tray-items">
+          <button><span className="seed-packet">✿</span><strong>Lavender</strong><small>1 seed</small></button>
+          <button><span className="water-drop">◆</span><strong>Water</strong><small>Ready</small></button>
+          <button className="locked-item"><span>?</span><strong>Something new</strong><small>Visit the market</small></button>
+        </div>
+      </section>
+    </section>
+  );
+}
+
 export default function Home() {
   const [care, setCare] = useState(initialCare);
   const [today, setToday] = useState(initialToday);
   const [moonlight, setMoonlight] = useState(38);
   const [message, setMessage] = useState("You made room for yourself yesterday.");
   const [tended, setTended] = useState<string[]>([]);
+  const [activeView, setActiveView] = useState<"today" | "garden">("today");
+  const [gardenReady, setGardenReady] = useState(false);
 
   const completed = useMemo(
     () => [...care, ...today].filter((task) => task.completed).length,
@@ -61,7 +136,8 @@ export default function Home() {
         if (task.id !== id) return task;
         const next = !task.completed;
         setMoonlight((value) => Math.max(0, value + (next ? 4 : -4)));
-        setMessage(next ? "That counts. Your garden felt it, too." : "No problem. You can return to it whenever you like.");
+        setMessage(next ? "You cared for yourself. Your lavender is ready to grow." : "No problem. You can return to it whenever you like.");
+        if (next) setGardenReady(true);
         return { ...task, completed: next };
       })
     );
@@ -88,6 +164,7 @@ export default function Home() {
         </button>
       </header>
 
+      {activeView === "today" ? <>
       <section className="welcome" aria-labelledby="welcome-title">
           <p className="eyebrow">Good evening, Shelby</p>
           <h1 id="welcome-title">You are already growing.</h1>
@@ -168,9 +245,11 @@ export default function Home() {
 
       <p className="permission">Nothing here is a test. Small things still count.</p>
 
+      </> : <GardenView growing={gardenReady} onGrowthSeen={() => setGardenReady(false)} />}
+
       <nav className="bottom-nav" aria-label="Main navigation">
-        <button className="active"><span>⌂</span>Today</button>
-        <button><span>✿</span>Garden<i className="nav-dot" /></button>
+        <button className={activeView === "today" ? "active" : ""} onClick={() => setActiveView("today")}><span>⌂</span>Today</button>
+        <button className={activeView === "garden" ? "active" : ""} onClick={() => setActiveView("garden")}><span>✿</span>Garden{gardenReady && <i className="nav-dot" />}</button>
         <button><span>◇</span>Discover</button>
         <button><span>○</span>You</button>
       </nav>
