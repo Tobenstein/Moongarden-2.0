@@ -11,7 +11,7 @@ export function PlanterArt({ kind, size = "medium" }: { kind: "nursery" | "clay"
   );
 }
 
-export function PlantArt({ species, stage = 4, size = "medium" }: { species: "dandelion" | "lavender" | "clover" | "marigold" | "fern" | "orchid"; stage?: number; size?: ArtSize }) {
+export function PlantArt({ species, stage = 4, size = "medium" }: { species: "dandelion" | "lavender" | "clover" | "marigold" | "fern" | "orchid" | "lily"; stage?: number; size?: ArtSize }) {
   return (
     <span className={`art plant-art plant-${species} stage-${stage} art-${size}`} aria-hidden="true">
       <i className="plant-stalk stalk-a"><b /><em /></i>

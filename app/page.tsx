@@ -192,7 +192,7 @@ function GardenView({
           <span className="hanger-line line-a" /><span className="hanger-line line-b" />
           <span className="garden-shelf" />
           <div className="hanging-pot pot-a"><PlantArt species="marigold" size="small" /><PlanterArt kind="clay" size="small" /></div>
-          <div className="hanging-pot pot-b"><PlantArt species="fern" size="small" /><PlanterArt kind="ceramic" size="small" /></div>
+          <div className="hanging-pot pot-b"><PlantArt species="lily" size="small" /><PlanterArt kind="ceramic" size="small" /></div>
           <span className="vine vine-a"><i /><i /><i /><i /></span>
         </div>
 
