@@ -235,6 +235,17 @@ button { font: inherit; }
 .garden-scene.is-growing .bed-left .plant-art { animation: bed-grow-locked 1.8s cubic-bezier(.2,.8,.2,1); }
 @keyframes bed-grow-locked { 0% { translate: 0 10px; opacity: .72; } 55% { translate: 0 -3px; } 100% { translate: 0 0; opacity: 1; } }
 
+/* Layering contract: soil behind roots, plants in the opening, front rim and pot body in front. */
+.garden-bed > .planter-art, .hanging-pot > .planter-art { z-index: auto; }
+.garden-bed > .planter-art .planter-soil, .hanging-pot > .planter-art .planter-soil { z-index: 1; }
+.garden-bed > .planter-art .planter-body, .garden-bed > .planter-art .planter-rim,
+.hanging-pot > .planter-art .planter-body, .hanging-pot > .planter-art .planter-rim { z-index: 3; }
+.garden-bed > .planter-art .planter-mark, .hanging-pot > .planter-art .planter-mark { z-index: 4; }
+.bed-plants, .hanging-pot .plant-art { z-index: 2; }
+.bed-plants { left: 10px; width: 126px; overflow: hidden; }
+.hanging-pot .plant-art { left: 17px; width: 38px; overflow: hidden; }
+.hanging-pot .plant-stalk { max-width: 3px; }
+
 @media (min-width: 700px) {
   body { padding: 24px 0; }
   .app-shell { min-height: calc(100svh - 48px); border-radius: 28px; }
