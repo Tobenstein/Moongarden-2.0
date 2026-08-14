@@ -247,6 +247,25 @@ button { font: inherit; }
 .hanging-pot .plant-art { left: 17px; width: 38px; overflow: visible; }
 .hanging-pot .plant-stalk { max-width: 3px; }
 
+/* Quiet night movement */
+.garden-scene .plant-stalk { animation: flower-breeze-a 4.9s ease-in-out infinite alternate; }
+.garden-scene .plant-stalk:nth-child(2) { animation-name: flower-breeze-b; animation-duration: 5.8s; animation-delay: -1.7s; }
+.garden-scene .plant-stalk:nth-child(3) { animation-duration: 4.3s; animation-delay: -3.1s; }
+.garden-scene .plant-stalk:nth-child(4) { animation-name: flower-breeze-b; animation-duration: 6.4s; animation-delay: -2.4s; }
+.garden-scene .plant-stalk:nth-child(5) { animation-duration: 5.3s; animation-delay: -.8s; }
+.garden-scene .plant-art:nth-child(even) .plant-stalk { animation-direction: alternate-reverse; }
+@keyframes flower-breeze-a { 0% { rotate: -1.2deg; translate: 0 0; } 47% { rotate: .5deg; translate: .3px -.4px; } 100% { rotate: 2deg; translate: 1px 0; } }
+@keyframes flower-breeze-b { 0% { rotate: 1.3deg; translate: .5px 0; } 56% { rotate: -.7deg; translate: 0 -.5px; } 100% { rotate: -2.2deg; translate: -1px .2px; } }
+
+.stars i:nth-child(1), .stars i:nth-child(4) { animation: star-twinkle 3.2s ease-in-out infinite; }
+.stars i:nth-child(2), .stars i:nth-child(5) { animation: star-twinkle 4.7s ease-in-out -2.1s infinite; }
+.stars i:nth-child(3) { animation: star-twinkle-soft 5.5s ease-in-out -1.4s infinite; }
+@keyframes star-twinkle { 0%,100% { opacity: .22; scale: .72; } 48% { opacity: .9; scale: 1.45; box-shadow: 0 0 10px var(--moon); } }
+@keyframes star-twinkle-soft { 0%,100% { opacity: .3; } 52% { opacity: .72; scale: 1.18; } }
+
+.sky-crescent { position: absolute; z-index: 1; top: 91px; left: 51%; width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(145deg,#ffe1a9,#dca076); box-shadow: 0 0 18px rgba(247,201,139,.25), 0 0 42px rgba(247,201,139,.1); transform: translateX(-50%) rotate(-17deg); opacity: .88; }
+.sky-crescent i { position: absolute; top: -7px; left: 12px; width: 43px; height: 43px; border-radius: 50%; background: #3d345d; box-shadow: inset 5px -4px 12px rgba(31,24,53,.28); }
+
 @media (min-width: 700px) {
   body { padding: 24px 0; }
   .app-shell { min-height: calc(100svh - 48px); border-radius: 28px; }
@@ -254,5 +273,5 @@ button { font: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }

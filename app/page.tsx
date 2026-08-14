@@ -184,6 +184,7 @@ function GardenView({
 
       <div className={`garden-scene ${growthActive ? "is-growing" : ""}`}>
         <div className="stars"><i /><i /><i /><i /><i /></div>
+        <div className="sky-crescent" aria-hidden="true"><i /></div>
         <div className="hill hill-back" />
         <div className="hill hill-front" />
         <div className="garden-path"><i /><i /><i /><i /><i /></div>
