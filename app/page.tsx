@@ -212,7 +212,7 @@ function GardenView({
             <PlantArt species="lavender" stage={4} size="small" />
           </span>
           <PlanterArt kind="trough" size="large" />
-          <span className="bed-label"><strong>Evening lavender</strong><small>{plantedDandelion ? "Lavender · Dandelion" : "Lavender · new growth"}</small></span>
+          <span className="bed-label"><strong>Evening lavender</strong></span>
         </button>
 
         <button className="garden-bed bed-right" aria-label="Long-stem rose trough">
@@ -222,7 +222,7 @@ function GardenView({
             <PlantArt species="rose" size="small" />
           </span>
           <PlanterArt kind="trough" size="large" />
-          <span className="bed-label"><strong>Long-stem roses</strong><small>Blush rose · in bloom</small></span>
+          <span className="bed-label"><strong>Long-stem roses</strong></span>
         </button>
 
         <div className="edge-foliage foliage-left"><PlantArt species="fern" size="large" /><i /><i /></div>
