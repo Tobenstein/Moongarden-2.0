@@ -89,13 +89,13 @@ export default function Home() {
       </header>
 
       <section className="welcome" aria-labelledby="welcome-title">
-        <p className="eyebrow">Good evening, Robin</p>
-        <h1 id="welcome-title">You are already<br />growing.</h1>
+          <p className="eyebrow">Good evening, Shelby</p>
+          <h1 id="welcome-title">You are already growing.</h1>
         <div className="garden-note">
           <span className="garden-orb" aria-hidden="true"><i /></span>
           <div>
             <p>{message}</p>
-            <span>Your lavender has started to open.</span>
+            <span>Your lavender has started to grow.</span>
           </div>
           <button aria-label="Visit your garden">›</button>
         </div>
@@ -116,8 +116,8 @@ export default function Home() {
       <section className="task-section" aria-labelledby="daily-care-title">
         <div className="section-heading">
           <div>
-            <span className="section-kicker">steady support</span>
-            <h2 id="daily-care-title">Daily care</h2>
+            <h2 id="daily-care-title">Daily Care</h2>
+            <p className="section-subtitle">Little things to keep you going.</p>
           </div>
           <button className="quiet-action">Edit</button>
         </div>
@@ -129,8 +129,8 @@ export default function Home() {
       <section className="task-section" aria-labelledby="today-title">
         <div className="section-heading">
           <div>
-            <span className="section-kicker">just for now</span>
             <h2 id="today-title">Today</h2>
+            <p className="section-subtitle">Important things you can get through.</p>
           </div>
           <button className="add-button" aria-label="Add something for today">＋</button>
         </div>
@@ -143,12 +143,11 @@ export default function Home() {
       <section className="growing-section" aria-labelledby="growing-title">
         <div className="section-heading growing-heading">
           <div>
-            <span className="section-kicker">at your own pace</span>
-            <h2 id="growing-title">Things I’m growing</h2>
+            <h2 id="growing-title">The Garden</h2>
+            <p className="section-subtitle">Things I’m growing at my own pace.</p>
           </div>
           <button className="quiet-action">See all</button>
         </div>
-        <p className="section-description">Not promises. Just directions you’d like to move in.</p>
         <div className="growth-scroll">
           {growthItems.map((item, index) => {
             const isTended = tended.includes(item.id);

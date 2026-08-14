@@ -58,7 +58,7 @@ button { font: inherit; }
 
 .welcome { position: relative; padding: 42px 0 30px; }
 .eyebrow { margin: 0 0 10px; color: var(--lavender); font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
-.welcome h1 { margin: 0; font: 400 clamp(42px, 12vw, 55px)/.98 Georgia, "Times New Roman", serif; letter-spacing: -.045em; color: #f3e9e2; }
+.welcome h1 { margin: 0; white-space: nowrap; font: 400 clamp(32px, 9.5vw, 43px)/1.05 Georgia, "Times New Roman", serif; letter-spacing: -.045em; color: #f3e9e2; }
 
 .garden-note {
   display: grid;
@@ -87,7 +87,7 @@ button { font: inherit; }
 
 .task-section, .growing-section { padding: 24px 0 29px; border-top: 1px solid var(--line); }
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 15px; }
-.section-kicker { display: block; margin-bottom: 5px; color: #897da1; font-size: 9px; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
+.section-subtitle { margin: 5px 0 0; color: var(--lavender); font-size: 12px; line-height: 1.45; }
 .quiet-action, .add-button { min-width: 44px; min-height: 44px; padding: 0 8px; border: 0; color: var(--lavender); background: transparent; font-size: 12px; cursor: pointer; }
 .add-button { font-size: 23px; color: var(--moon); }
 
@@ -105,8 +105,7 @@ button { font: inherit; }
 .not-today { display: block; min-height: 44px; margin: 7px auto -13px; border: 0; color: #80758f; background: transparent; font-size: 11px; cursor: pointer; }
 .not-today span { color: var(--lavender); text-decoration: underline; text-underline-offset: 3px; }
 
-.growing-heading { margin-bottom: 8px; }
-.section-description { max-width: 285px; margin: 0 0 18px; color: var(--lavender); font-size: 12px; line-height: 1.55; }
+.growing-heading { margin-bottom: 18px; }
 .growth-scroll { display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: 12px; overflow-x: auto; margin-right: -20px; padding-right: 20px; scrollbar-width: none; scroll-snap-type: x mandatory; }
 .growth-scroll::-webkit-scrollbar { display: none; }
 .growth-card { position: relative; min-height: 220px; padding: 20px; overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(145deg, rgba(79,61,115,.74), rgba(30,22,54,.9)); scroll-snap-align: start; }
