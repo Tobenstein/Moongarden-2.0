@@ -326,7 +326,14 @@ export default function Home() {
   }
 
   return (
-    <main className="app-shell">
+    <div className="device-stage">
+      <div className="device-frame">
+        <div className="device-status" aria-hidden="true">
+          <span className="device-time">9:41</span>
+          <span className="device-island" />
+          <span className="device-signals"><i /><i /><i /><b /></span>
+        </div>
+        <main className="app-shell">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
@@ -450,6 +457,9 @@ export default function Home() {
         <button><span>◇</span>Discover</button>
         <button><span>○</span>You</button>
       </nav>
-    </main>
+        </main>
+        <span className="device-home" aria-hidden="true" />
+      </div>
+    </div>
   );
 }

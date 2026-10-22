@@ -25,6 +25,9 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+.device-stage, .device-frame { display: contents; }
+.device-status, .device-home { display: none; }
+
 button { font: inherit; }
 
 .app-shell {
@@ -295,9 +298,114 @@ button { font: inherit; }
 .sky-crescent i { position: absolute; top: -7px; left: 12px; width: 43px; height: 43px; border-radius: 50%; background: #3d345d; box-shadow: inset 5px -4px 12px rgba(31,24,53,.28); }
 
 @media (min-width: 700px) {
-  body { padding: 24px 0; }
-  .app-shell { min-height: calc(100svh - 48px); border-radius: 28px; }
-  .bottom-nav { bottom: 24px; border-radius: 0 0 28px 28px; }
+  html {
+    background:
+      radial-gradient(circle at 50% 27%, rgba(247,201,139,.13), transparent 24%),
+      linear-gradient(145deg, #d9d4cf, #c8c4c0 52%, #d8d3ce);
+  }
+  body { min-height: 100svh; padding: 24px; background: transparent; }
+  .device-stage {
+    display: grid;
+    min-height: calc(100svh - 48px);
+    place-items: center;
+  }
+  .device-frame {
+    position: relative;
+    display: block;
+    width: 456px;
+    height: min(900px, calc(100svh - 48px));
+    min-height: 720px;
+    padding: 10px;
+    overflow: hidden;
+    border: 2px solid #6f747a;
+    border-radius: 58px;
+    background: linear-gradient(145deg, #292d32, #07090b 42%, #24282c);
+    box-shadow:
+      0 28px 65px rgba(31,27,33,.28),
+      0 8px 18px rgba(27,25,28,.22),
+      inset 0 0 0 2px #111419,
+      inset 0 0 0 4px rgba(255,255,255,.08);
+  }
+  .device-frame::before, .device-frame::after {
+    content: "";
+    position: absolute;
+    z-index: 4;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+    background: #555a60;
+    box-shadow: inset 1px 0 rgba(255,255,255,.16);
+  }
+  .device-frame::before { top: 172px; left: -4px; height: 66px; box-shadow: 0 83px 0 #555a60, inset 1px 0 rgba(255,255,255,.16); }
+  .device-frame::after { top: 218px; right: -4px; height: 88px; border-radius: 0 4px 4px 0; }
+  .device-status {
+    position: absolute;
+    z-index: 12;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 20px);
+    height: 54px;
+    padding: 0 26px;
+    border-radius: 46px 46px 0 0;
+    color: #17171a;
+    background: #faf8f4;
+    font-size: 13px;
+    font-weight: 750;
+  }
+  .device-time { letter-spacing: -.02em; }
+  .device-island {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    width: 114px;
+    height: 30px;
+    border-radius: 99px;
+    background: #08090a;
+    transform: translateX(-50%);
+    box-shadow: inset 0 -1px rgba(255,255,255,.08);
+  }
+  .device-signals { display: flex; align-items: flex-end; gap: 3px; height: 15px; }
+  .device-signals i { display: block; width: 3px; border-radius: 2px; background: #17171a; }
+  .device-signals i:nth-child(1) { height: 5px; }
+  .device-signals i:nth-child(2) { height: 9px; }
+  .device-signals i:nth-child(3) { height: 13px; }
+  .device-signals b { display: block; width: 19px; height: 9px; margin-left: 4px; border: 1.5px solid #17171a; border-radius: 3px; box-shadow: inset -3px 0 #17171a; }
+  .device-home {
+    position: absolute;
+    z-index: 13;
+    left: 50%;
+    bottom: 17px;
+    display: block;
+    width: 126px;
+    height: 5px;
+    border-radius: 99px;
+    background: #17171a;
+    transform: translateX(-50%);
+  }
+  .app-shell {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding-top: 54px;
+    padding-bottom: 102px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 47px;
+    scrollbar-width: none;
+  }
+  .app-shell::-webkit-scrollbar { display: none; }
+  .bottom-nav {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: calc(100% - 20px);
+    height: 90px;
+    padding-bottom: 24px;
+    transform: none;
+    border-radius: 0 0 47px 47px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
